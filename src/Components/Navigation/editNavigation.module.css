@@ -1,0 +1,66 @@
+.mainWrapper {
+    background: #ececec;
+    width: 100%
+}
+.block {
+    width:  760px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 15px auto;
+    margin-bottom: 0;
+    padding: 0 20px;
+    border-radius: 8px;
+    /* color: #808185 !important; */
+   
+}
+.wrapper {
+    width: 33%;
+    margin: 0; 
+}
+.wrapper span {
+    /* border: 1px solid #E94B1E; */
+    display: inline-block;
+    /* padding-bottom: 0; */
+    /* color: inherit !important; */
+    /* color: #1d252d; */
+    
+}
+.link, .active {
+    display: inline-block;
+    /* color: white !important; */
+    text-decoration: none;
+    font-size: 16px !important;
+    font-weight: 600;
+    cursor: pointer;
+    padding-top: 20px;
+    padding-bottom: 1px;
+    margin: 0;
+}
+.link span {
+    color: #808185 !important;
+}
+.active {
+    border-bottom: 4px solid #E94B1E;
+    
+}
+.active span {
+    color: #E94B1E !important;
+}
+.iconWrapper {
+    display: inline;
+    margin: 0;
+    margin-right: 4px;
+}
+.active .iconWrapper {
+    fill: #E94B1E;
+}
+.icon {
+    width: 24px;
+    fill: #808185 !important;
+    padding: 0;   
+} 
+.active .icon {
+    fill: #E94B1E !important;
+}
+ 

@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import c from './App.module.css';
+import SurveyFormContainer from './Components/SurveyFormContainer.jsx';
+import { Routes, Route } from 'react-router-dom';
+import AppLayout from './Components/AppLayout/AppLayout';
+import EditLayout from './Components/EditLayout/EditLayout';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <div>
+  <AppLayout />
+  <div className={c.surveyWrapper}>
+    <Routes>
+      <Route path='/' element={<SurveyFormContainer />} />
+      <Route path='edit/*' element={<EditLayout />} />
+    </Routes>
+  </div>
+</div>
 }
 
 export default App;

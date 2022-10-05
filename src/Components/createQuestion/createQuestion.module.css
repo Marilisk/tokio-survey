@@ -1,0 +1,196 @@
+* {
+  text-align: center;
+  vertical-align: baseline;
+  overflow-x: hidden;
+  overflow-y: visible;  
+  /* position: static; */
+}
+
+.answers {
+  padding: 1em;
+  display: inline-block;
+}
+
+.radioWrapper {
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  /* border: 2px solid pink; */
+}
+
+.radioWrapper div {
+  margin: 0;
+}
+
+/* === ФОРМА ВНУТРЕННЕГО ПОЛЬЗОВАНИЯ === */
+.form {
+  width: 1080px;
+  margin: 0 auto;  
+  border-radius: 10px;
+  background: white;
+  padding: .6em;
+  z-index: 45;
+}
+
+.text {
+  width: 30%;
+}
+.textarea {
+  background: #ececec;
+  border: 1px solid #D5D5D6; 
+  color: #808185 !important;
+  font-weight: 800;
+  border-radius: 3px;
+  padding: .3em;
+  height: 80px;
+  width: 98%; 
+  text-align: justify;
+  margin: 5px auto 0 0;
+}
+.textarea:focus, .formInput:focus {
+  outline: none;
+  background: white;
+  border: 1px solid #808185;
+}
+
+.formInput, .surveySelect {
+  width: 5em;
+  margin: 5px auto 0 0;
+  padding: .3em;
+  background: #ececec;
+  border: 1px solid #D5D5D6; 
+  color: #808185 !important;
+  font-weight: 800;
+  border-radius: 3px;
+}
+.formInput:focus {
+  border: 1px solid #1d252d;
+  outline:none;
+  background: white;
+}
+.formInput:read-only {
+  color: #D5D5D6 !important ;
+  border: #ececec;
+}
+.formInput:read-only:hover,
+.formInput:read-only:focus {
+  color: #D5D5D6 !important ;
+  border: #ececec;
+  background: #ececec;
+}
+
+.validation .textarea {
+  height: 3em;  
+}
+.conditional {
+  width: 30%;
+}
+.answersVarieties .label {
+  text-align: left;
+  
+}
+
+.inputGroup {
+  width: 80%;
+  display: flex;
+  margin: 1em auto 1em auto;
+  justify-content: space-evenly;
+}
+.surveyNumber {
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+.surveyNumber .label {
+  margin: 15px 10px auto auto;
+}
+.surveySelect {
+  width: 340px;
+}
+.numbers {
+  display: flex;
+  justify-content: space-around;
+  width: 30%;
+}
+.column {
+  margin: auto;
+  width: 30%;
+  margin-top: 0;
+  height: 100%;
+}
+.numbers .label {
+  width: 98%;
+  height: 40%;
+}
+
+
+
+.label, .labelRadio {
+  color: #808185 !important;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+
+.radioGroup {
+  width: 30%;  
+}
+.radioGroup .label {
+  text-align: left;
+}
+label {
+  display: flex;
+}
+
+
+.customRadioBtn {
+  cursor: pointer;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  margin: 10px 4px auto 0;
+  margin-right: 10px;
+}
+
+.hidden {
+  z-index: -5;
+  display: none;
+}
+
+
+.nonClickable {
+  pointer-events: none;
+  
+}
+
+.serverMessage {
+  max-width: 200px;
+  color: #E94B1E !important;
+  color: white !important;
+  font-weight: 800;
+  margin-top: 5px;
+  background: rgba(67, 86, 104, .85);
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 20px;
+  position: fixed;
+  top: 45vh;
+  right: 45vw; 
+  transition: 2s;
+}
+.serverMessage:hover {
+  background: rgba(67, 86, 104, .7);
+  transition: 300ms;
+}
+.serverMsgNote {
+  font-size: 10px;
+  display: block;
+  color: #ececec !important;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-weight: 400;
+}

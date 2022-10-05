@@ -1,0 +1,113 @@
+* {
+  text-align: center;
+  vertical-align: baseline;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+body {
+  
+  font-family: Arial, sans-serif;
+  color: #fff;
+  font-size: 28px;
+  z-index: -1;
+}
+
+/*=== МЕДИА ЗАПРОСЫ ===  */
+@media screen and (max-width:425px) {
+  * {
+    font-size: 20px;
+  }
+  
+}
+
+/*=== КОНЕЦ МЕДИА ЗАПРОСОВ ===  */
+
+
+.answers {
+  padding: 1em;
+  display: inline-block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  margin: 0 auto;
+  background: white;
+  color: #808185 !important;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.form input, .surveySelect {
+  width: 270px;
+  padding: .5em;
+  margin: .5em;
+  background: #eaeaea;
+  border: 1px solid #D5D5D6;
+  border-radius: 3px;
+  color: #808185 !important;
+}
+.form input:focus, .surveySelect:focus {
+  border: 1px solid #808185;
+  outline:none;
+  background: white;
+  color: #808185 !important;
+}
+
+.inputGroup {
+  width: 100%;
+  display: flex;
+  margin: 1em auto 1em auto;
+  justify-content: space-evenly;
+  /* padding-bottom: 1em; */
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.label {
+  text-align: right;
+  width: 36%;
+  margin-top: 1.3em;
+  color: #808185 !important;
+}
+
+.serverMessage {
+  z-index: 1;
+  width: 440px;
+  color: #E94B1E !important;
+  color: white !important;
+  font-weight: 800;
+  margin-top: 5px;
+  background: rgba(67, 86, 104, .85);
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 20px;
+  position: fixed;
+  top: 45vh;
+  right: 45vw; 
+  transition: 2s;
+}
+.serverMessage:hover {
+  background: rgba(67, 86, 104, .8);
+  transition: 1s;
+}
+.serverMsgNote {
+  font-size: 10px;
+  display: block;
+  color: #ececec !important;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-weight: 400;
+}
+.nonClickable {
+  pointer-events: none;
+}
+
+.loader {
+  color: white !important;
+  margin-top: 20px;
+}
