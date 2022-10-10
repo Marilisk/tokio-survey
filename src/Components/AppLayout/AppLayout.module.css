@@ -3,20 +3,24 @@
   vertical-align: baseline;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
+  /* z-index: -1; */
 }
 
 body {
   background-color: #1d252d;
   font-family: Arial, sans-serif;
   font-size: 28px;
-  z-index: -1;
+  /* z-index: -1; */
 }
 
 .header {
   position: relative;
-  z-index: 10;
+  z-index: 1;
   margin: 2em auto 1.2em auto;
 }
+/* .layout {
+  z-index: 160;
+} */
 
 /**** LAYOUT ****/
 .wrapper_bg1, 
@@ -25,7 +29,7 @@ body {
 .wrapper_bg4, 
 .wrapper_bg5 {
   position: absolute;
-  z-index: 0;
+  z-index: -2;
 }
 /* верхняя черная мазня */
 .wrapper_bg1 {
@@ -72,10 +76,8 @@ body {
     overflow: hidden;
     background: pink; 
     max-width: 100vw;
-    
   }
   body {
-    /* background: yellow; */
     height: 100vh; 
     max-width: 100vw; 
   }

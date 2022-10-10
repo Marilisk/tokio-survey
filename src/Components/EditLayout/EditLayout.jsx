@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import c from './EditLayout.module.css';
 import { Routes, Route } from 'react-router-dom';
+import logo from './../../images/logo.png';
 import CreateQuestion from '../createQuestion/createQuestion.jsx';
 import EditNavigation from '../Navigation/EditNavigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,6 +38,9 @@ function EditLayout() {
     let sortedQList = sorted.resultList;
     
     return <div>
+        <div className={c.header}>
+            <img src={logo} alt='' />
+        </div>
         <EditNavigation />
         <div className={c.surveyWrapper}>
             <Routes>

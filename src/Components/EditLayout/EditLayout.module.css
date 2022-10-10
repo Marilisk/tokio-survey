@@ -1,7 +1,7 @@
 * {
   text-align: center;
   vertical-align: baseline;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif; 
   /* color: white; */
 }
 
@@ -14,9 +14,7 @@
   text-align: center;
   box-sizing: border-box;
   min-height: 100vh;
-  /* color: #1d252d; */
-
-  background: #ececec;
+  /* background: #ececec; */
 } 
 
 /*=== МЕДИА ЗАПРОСЫ ===  */
@@ -30,7 +28,6 @@
   }
   .surveyWrapper {
     z-index: 1;
-    /* position: relative; */
     margin: 0 auto;
     padding: 0;
     display: block;

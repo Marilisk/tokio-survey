@@ -1,12 +1,10 @@
 import c from './App.module.css';
-import SurveyFormContainer from './Components/SurveyFormContainer.jsx';
+import SurveyFormContainer from './Components/Survey/SurveyFormContainer.jsx';
 import { Routes, Route } from 'react-router-dom';
-import AppLayout from './Components/AppLayout/AppLayout';
 import EditLayout from './Components/EditLayout/EditLayout';
 
 function App() {
   return <div>
-  <AppLayout />
   <div className={c.surveyWrapper}>
     <Routes>
       <Route path='/' element={<SurveyFormContainer />} />

@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import QuestionRow from "./QuestionRow.jsx";
 import { changeSurveyAC, setServerMessageAC } from "../../redux/app-reducer.js";
 
-const QuestionList =  ({ sortedQList, serverMessage, deleteServerMessage, surveyId, surveyTitle, isBtnDisabled, questionsList, surveys }) => {
+const QuestionList = ({ sortedQList, serverMessage, deleteServerMessage, surveyId, surveyTitle, isBtnDisabled, questionsList, surveys }) => {
     const dispatch = useDispatch();
     if (sortedQList.length < 1) {
         return <div className={c.loader}>Вопросы загружаются...</div>
     }
-    
+
     const questionElements = sortedQList.map((elem) => <QuestionRow key={elem.id}
         qListElement={elem}
         surveyId={surveyId}
@@ -17,13 +17,12 @@ const QuestionList =  ({ sortedQList, serverMessage, deleteServerMessage, survey
         questionsList={questionsList}
     />)
 
-    const surveyOptions = surveys.map( el => <option value={el.id} label={`${el.title}, id ${el.id}`} key={el.id} />);
+    const surveyOptions = surveys.map(el => <option value={el.id} label={`${el.title}, id ${el.id}`} key={el.id} />);
 
     return <>
         <div className={c.shortForm}>
 
             <div className={c.surveyNumber}>
-
                 <h2>опрос </h2>
                 <select id={'survey_id'}
                     name={'survey_id'}
@@ -50,7 +49,7 @@ const QuestionList =  ({ sortedQList, serverMessage, deleteServerMessage, survey
 
             </div>
         </div>
-        <div className={(serverMessage||deleteServerMessage) && c.nonClickable}>
+        <div className={(serverMessage || deleteServerMessage) && c.nonClickable}>
             {questionElements}
         </div>
     </>

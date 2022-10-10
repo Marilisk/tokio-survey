@@ -2,11 +2,10 @@ import React from "react";
 import c from './DatePicker.module.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment, { Moment } from "moment/moment";
+import moment from "moment/moment";
 
 const DateInput = ({onInputChange, questionId, inputValue}) => {
-  
-  let initialDate = new Date();
+ 
   const oninput = (date) => {
     onInputChange(date, 'date', questionId);
   }
@@ -16,7 +15,7 @@ const DateInput = ({onInputChange, questionId, inputValue}) => {
       selected={inputValue}
       onChange={(date) => oninput(date)} 
       showTimeSelect
-      locale={"pt-BR"}
+      locale={"pt-br"}
       filterDate = {(date) => {
         return moment() > date;
       }}
