@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQListThunkCreator, sendAnswersThunkCreator } from '../../redux/app-reducer.js';
@@ -7,41 +7,43 @@ import c from './../../App.module.css';
 import Question from "./Question.jsx";
 import { manageStorageonFinishSurvey } from "./manageStorage.js";
 import AppLayout from "../AppLayout/AppLayout.jsx";
+import surveyAPI from "../../DAL/api.js";
 
 
-const SurveyFormContainer = (props) => {
+const SurveyFormContainer = () => {
   let surveyId = useSelector(state => state.app.surveyId);
   let dispatch = useDispatch();
   const getQList = useCallback(() => {
     let lastPassedQuesNextId = null;
     if (localStorage.getItem('lastPassedQuestionNextId')) {
-      lastPassedQuesNextId = Number(localStorage.getItem('lastPassedQuestionNextId'));
+      lastPassedQuesNextId = localStorage.getItem('lastPassedQuestionNextId');
     }
     dispatch(getQListThunkCreator(lastPassedQuesNextId, surveyId));
-  });
+  }, [dispatch, surveyId]);
 
   const collectedAnswers = (useSelector(state => state.app.answers));
 
   const sendAnswers = useCallback((answers) => {
     manageStorageonFinishSurvey();
     let request = {
-      answers: [answers],
+      answers,
       survey_id: 1
     };
-    let json = JSON.stringify(request);
-    dispatch(sendAnswersThunkCreator(json));
-  })
+    console.log(request)
+    surveyAPI.sendAnswers(request)
+    //dispatch(sendAnswersThunkCreator(request));
+  }, [dispatch])
 
   let inputValue = useSelector(state => state.app.newAnswer[1]);
 
   useEffect((surveyId) => {
     getQList(surveyId);
-  }, []);
+  }, [surveyId, getQList]);
 
 
   const qList = useSelector(state => state.app.qList);
   const currentQuestionId = useSelector(state => state.app.currentQuestionId);
-  const question = qList.find(e => e.id === currentQuestionId);
+  const question = qList.find(e => e._id === currentQuestionId);
 
   // если нужно отменить запрет повторного прохождения опроса в течение 180 дней, то вот код:
   let surveyIsFinished = localStorage.getItem('surveyIsFinished');
@@ -59,7 +61,7 @@ const SurveyFormContainer = (props) => {
 
   if (!question || (qList.length === Object.keys(collectedAnswers).length)) {
     if (Object.keys(collectedAnswers).length < qList.length) {
-      console.log('вопросов больше чем ответов, берем из storage');
+      //console.log('вопросов больше чем ответов, берем из storage');
       let answersFromStorage = {};
       for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);

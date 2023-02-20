@@ -22,7 +22,7 @@ const Question = ({ question, inputValue, nextQuestionId }) => {
 
   const next = (inputValue) => {
     showNextButton(false);
-    if (!Number.isFinite(nextQuestionId)) {
+    if (typeof nextQuestionId !== 'string') {
       nextQuestionId = (inputValue === 'да') ? nextQuestionId[0] : nextQuestionId[1];
     };
     onSubmitQuestion(nextQuestionId);
@@ -43,12 +43,12 @@ const Question = ({ question, inputValue, nextQuestionId }) => {
       return <div key={`${index}`}>
         <div className={c.label}>{elem.label + ' '}
           <div>
-            <input onChange={(e) => onInputChange(labelElem, e.currentTarget.type, question.id)}
+            <input onChange={(e) => onInputChange(labelElem, e.currentTarget.type, question._id)}
               type={`${question.type}`}
               value={inputValue}
               name={`${question.questionText}`}
-              id={`${question.id}`}
-              key={`${question.id}${index}`}
+              id={`${question._id}`}
+              key={`${question._id}${index}`}
               className={c.customRadioBtn}
             />
           </div>
@@ -59,11 +59,11 @@ const Question = ({ question, inputValue, nextQuestionId }) => {
   const AnswerField = ({ type }) => {
     return <div>
       {type === 'date' ?
-        <DateInput onInputChange={onInputChange} questionId={question.id} inputValue={inputValue} className={c.datePicker} />
+        <DateInput onInputChange={onInputChange} questionId={question._id} inputValue={inputValue} className={c.datePicker} />
         :
-        <input onChange={(e) => onInputChange(e.currentTarget.value, e.currentTarget.type, question.id)}
+        <input onChange={(e) => onInputChange(e.currentTarget.value, e.currentTarget.type, question._id)}
           type={'text'}
-          id={question.id}
+          id={question._id}
           autoFocus={true}
           value={inputValue}
           className={c.answerField}

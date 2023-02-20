@@ -1,5 +1,4 @@
-import { act } from "react-dom/test-utils";
-import surveyAPI, { deleteQuestionAPI, editAPI, editQuestionAPI, editSurveyAPI } from "../DAL/api";
+import surveyAPI, { createQuestionAPI, deleteQuestionAPI, editQuestionAPI, editSurveyAPI } from "../DAL/api";
 const ON_ANSWER_CHANGE = 'ON_ANSWER_CHANGE';
 const ON_SUBMIT_QUESTION = 'ON_SUBMIT_QUESTION';
 const SET_QLIST = 'ON_SET_QLIST';
@@ -21,7 +20,7 @@ let initialState = {
   newAnswer: [],
 
   surveyList: [],
-  surveyId: 1,
+  surveyId: '63f32e2111ac602ebc0464fe',
   surveyTitle: '',
   currentQuestionId: '',
   serverResponseMessage: {
@@ -94,8 +93,8 @@ const appReducer = (state = initialState, action) => {
     }
     case DELETE_QUESTION: {
       let stateCopy = { ...state };
-      let deletedId = action.id;
-      stateCopy.qList = state.qList.filter(elem => elem.id !== deletedId);
+      let deletedId = action._id;
+      stateCopy.qList = state.qList.filter(elem => elem._id !== deletedId);
       stateCopy.serverResponseMessage.deleteQuestion = `вопрос ${deletedId} успешно удалён`;
       return stateCopy;
     }
@@ -109,7 +108,7 @@ const appReducer = (state = initialState, action) => {
     case UPDATE_QUESTION: {
       let stateCopy = { ...state };
       stateCopy.qList = [...state.qList];
-      let currentQuestion = stateCopy.qList.find( q => q.id === action.id);
+      let currentQuestion = stateCopy.qList.find( q => q._id === action._id);
       currentQuestion.type = action.newQuestion.type;
       currentQuestion.nextid = action.newQuestion.nextid;
       currentQuestion.yes = action.newQuestion.yes;
@@ -119,7 +118,7 @@ const appReducer = (state = initialState, action) => {
       currentQuestion.validation = action.newQuestion.validation;
       currentQuestion.parent = action.newQuestion.parent;
       currentQuestion.parentIndex = action.newQuestion.parentIndex;
-      stateCopy.serverResponseMessage.editQuestion = `вопрос с id ${action.id} изменён на сервере`;
+      stateCopy.serverResponseMessage.editQuestion = `вопрос с id ${action._id} изменён на сервере`;
       return stateCopy;
     }
     case ADD_QUESTION: {
@@ -127,13 +126,13 @@ const appReducer = (state = initialState, action) => {
       let stateCopy = { ...state };
       stateCopy.qList = [...state.qList];
       let newQuestion = action.question;
-      newQuestion.id = action.id;
+      newQuestion._id = action._id;
 
       console.log(newQuestion);
       stateCopy.qList.push(newQuestion);
       
-      if (action.id) {
-        stateCopy.serverResponseMessage.editQList = `добавлен новый вопрос с id ${action.id}`;
+      if (action._id) {
+        stateCopy.serverResponseMessage.editQList = `добавлен новый вопрос с id ${action._id}`;
       } else {
         stateCopy.serverResponseMessage.editQList = `не получилось добавить новый вопрос :(`;
       }
@@ -160,10 +159,10 @@ export const setQListAC = (qList, start, surveyId, surveyTitle) => ({ type: SET_
 export const setSurveysAC = (surveyList) => ({ type: SET_SURVEYS, surveyList: surveyList, });
 export const surveyChangesAC = (surveyId, title, start) => ({ type: SET_SURVEY_CHANGES, surveyId: surveyId, title: title, start: start });
 export const setServerMessageAC = (text, part ) => ({ type: SET_SERVER_MESSAGE, text: text, part: part});
-export const deleteQuestionAC = (id) => ({ type: DELETE_QUESTION, id: id });
+export const deleteQuestionAC = (_id) => ({ type: DELETE_QUESTION, _id });
 export const addStorageAnswersAC = (obj) => ({type: ADD_STORAGE_ANSW, obj: obj});
-export const updateQuestionAC = (id, newQuestion) => ({type: UPDATE_QUESTION, id: id, newQuestion: newQuestion });
-export const addQuestionAC = (id, question) => ({type: ADD_QUESTION, id: id, question: question });
+export const updateQuestionAC = (_id, newQuestion) => ({type: UPDATE_QUESTION, _id, newQuestion: newQuestion });
+export const addQuestionAC = (_id, question) => ({type: ADD_QUESTION, _id, question: question });
 export const switchBtnDisabilityAC = (mode) => ({type: SWITCH_BTN_DISABLED, mode: mode });
 export const changeSurveyAC = (surveyId) => ({type: CHANGE_SURVEY_ID, surveyId: surveyId });
 
@@ -174,7 +173,6 @@ export const getQListThunkCreator = (lastPassedQuesNextId, surveyId) => {
     let response = await surveyAPI.getQList(lastPassedQuesNextId, surveyId);
     let qList = response.data.questions;
     let start = lastPassedQuesNextId || response.data.start;
-    //let surveyId = response.data.id;
     let surveyTitle = response.data.title;
     if (response.statusText === 'OK') {
       dispatch(setQListAC(qList, start, surveyId, surveyTitle));
@@ -234,7 +232,7 @@ export const sendEditedQuestionThunkCreator = (editibleQuestionId, json) => {
 export const addQuestionThunkCreator = (json) => {
   return async function addQuestionThunk(dispatch) {
     dispatch(switchBtnDisabilityAC(true));
-    let response = await editAPI(json);
+    let response = await createQuestionAPI(json);
     if (response.statusText === 'OK') {
       
       let question = JSON.parse(json);
@@ -284,10 +282,6 @@ export const editSurveyThunkCreator = (surveyId, json) => {
     }
   }
 }
-
-
-
-
 
 
 export default appReducer;

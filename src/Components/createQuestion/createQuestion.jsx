@@ -9,7 +9,7 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
 
     const formik = useFormik({
         initialValues: {
-            survey_id: surveyId,
+            surveyId,
             nextid: '',
             yes: '',
             no: '',
@@ -23,10 +23,6 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
         },
         // validate, 
         onSubmit: (values, actions) => {
-            values.survey_id = Number(values.survey_id);
-            values.nextid = Number(values.nextid);
-            values.yes = Number(values.yes);
-            values.no = Number(values.no);
             let json = JSON.stringify(values);
             console.log(json);
             dispatch(addQuestionThunkCreator(json));
@@ -46,7 +42,7 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
         }
     });
 
-    const surveyOptions = surveys.map( el => <option value={el.id} label={`${el.title}, id ${el.id}`} key={el.id} />);
+    const surveyOptions = surveys.map( el => <option value={el._id} label={`${el.title}, id ${el._id}`} key={el._id} />);
 
     return <div >
         {createServerMessage &&

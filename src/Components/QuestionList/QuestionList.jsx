@@ -10,14 +10,14 @@ const QuestionList = ({ sortedQList, serverMessage, deleteServerMessage, surveyI
         return <div className={c.loader}>Вопросы загружаются...</div>
     }
 
-    const questionElements = sortedQList.map((elem) => <QuestionRow key={elem.id}
+    const questionElements = sortedQList.map((elem, i) => <QuestionRow key={i}
         qListElement={elem}
         surveyId={surveyId}
         isBtnDisabled={isBtnDisabled}
         questionsList={questionsList}
     />)
 
-    const surveyOptions = surveys.map(el => <option value={el.id} label={`${el.title}, id ${el.id}`} key={el.id} />);
+    const surveyOptions = surveys.map(el => <option value={el._id} label={`${el.title}, id ${el._id}`} key={el._id} />);
 
     return <>
         <div className={c.shortForm}>

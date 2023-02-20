@@ -11,7 +11,7 @@ import { deleteQuestionThunkCreator, sendEditedQuestionThunkCreator } from "../.
 const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) => {
     const dispatch = useDispatch();
     const deleteQuestion = () => {
-        let id = qListElement.id;
+        let id = qListElement._id;
         dispatch(deleteQuestionThunkCreator(id));
     };
 
@@ -30,13 +30,8 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
             validation: qListElement.validation,
         },
         enableReinitialize: true,
-        // validate, 
         onSubmit: (values, actions) => {
-            let editibleQuestionId = qListElement.id;
-            values.survey_id = Number(values.survey_id);
-            values.nextid = Number(values.nextid);
-            values.yes = Number(values.yes);
-            values.no = Number(values.no);
+            let editibleQuestionId = qListElement._id;
             let json = JSON.stringify(values);
             dispatch(sendEditedQuestionThunkCreator(editibleQuestionId, json));
             actions.resetForm({
@@ -55,12 +50,12 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
         }
     });
 
-    let options = questionsList.map(e => <option className={c.option} 
-                                                 value={e.id} 
-                                                 label={`${e.question} - ${e.id}`} 
-                                                 key={e.id}>
-                                                    {e.id}
-                                         </option>);
+    let options = questionsList.map((e, i) => <option className={c.option}
+        value={e._id}
+        label={`${e.question}`}
+        key={i}>
+        {e._id}
+    </option>);
 
     const [editMode, changeEditMode] = useState(false);
 
@@ -81,7 +76,6 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
                     </div>
 
                     {editMode ? <>
-
 
                         <div className={c.radioGroup}>
 
@@ -129,17 +123,12 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
                 </div>
 
                 <div className={editMode ? c.initialNumbers : c.initialNumbersToLeft}>
-                    {/* {editMode &&
-                    <div className={c.questionNumWrap}>
-                        {qListElement.parent && <span className={c.label}>предыдущий вопрос "{qListElement.parent}" </span>}
-                    </div>
-                    } */}
+
                     {editMode &&
                         <div className={c.numbersList}>
                             <p className={c.label}>предыдущий вопрос</p>
-
                             <div className={c.parent} >
-                            {qListElement.parent}
+                                {qListElement.parent}
                             </div>
 
                         </div>
@@ -188,10 +177,10 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
                             {options}
                         </select>
                     </div>
-                    
+
                 </div>
 
-                
+
 
                 {editMode ? <div>{formik.values.type === 'radio' ?
 
@@ -246,16 +235,16 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
 
                 <div className={editMode ? c.btnsBlock : c.shortBtnsBlock} >
                     {editMode &&
-                    <button disabled={isBtnDisabled} type={'submit'} className={c.sendButton} >
-                        <img alt={''} key={`${qListElement.id}im`} src={sendIcon} className={c.sendIcon} />
-                    </button>
+                        <button disabled={isBtnDisabled} type={'submit'} className={c.sendButton} >
+                            <img alt={''} key={`${qListElement._id}im`} src={sendIcon} className={c.sendIcon} />
+                        </button>
                     }
-                    <button disabled={isBtnDisabled} key={`${qListElement.id}delb`} type={'button'} className={c.deleteButton} onClick={() => deleteQuestion()} >
-                        <img alt={''} key={`${qListElement.id}del`} src={deleteIcon} className={c.deleteIcon} />
+                    <button disabled={isBtnDisabled} key={`${qListElement._id}delb`} type={'button'} className={c.deleteButton} onClick={() => deleteQuestion()} >
+                        <img alt={''} key={`${qListElement._id}del`} src={deleteIcon} className={c.deleteIcon} />
                     </button>
 
                     <button disabled={isBtnDisabled} type={'button'} className={editMode ? c.brightButton : c.editButton} onClick={() => changeEditMode(!editMode)} >
-                        <img alt={''} key={`${qListElement.id}ed`} src={editIcon} className={c.editIcon} />
+                        <img alt={''} key={`${qListElement._id}ed`} src={editIcon} className={c.editIcon} />
                     </button>
 
                 </div>

@@ -3,12 +3,6 @@ import c from './TEST.module.css';
 import sendIcon from './../../images/rotate-right-icon.svg';
 
 
-/* let elements = sortedQList.map( el => {
-
-        return <div className={c.child} key={el.id}  >{el.id}</div>
-    } ) */
-
-
 const Round = ({mouseLeft, mouseTop }) => {
     return <img src={sendIcon} className={c.round} style={{ left: mouseLeft, top: mouseTop}} />
 }
@@ -23,8 +17,6 @@ const RoundOnLayout = () => {
 
     return <div className={c.mainWrapper} onMouseMove={(event)=> handleMouseMove(event)} >
         <Round mouseTop={mouseTop} mouseLeft={mouseLeft} />
-
-
     </div>
 }
 
@@ -42,7 +34,6 @@ const TESTQuestionRow = ({ sortedQList }) => {
         console.log(coords);
         
     }) 
-
 
 
     return <div>

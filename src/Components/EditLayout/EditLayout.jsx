@@ -15,17 +15,21 @@ import TESTQuestionRow from '../QuestionList/TESTQuestionRow';
 function EditLayout() {
     let dispatch = useDispatch();
     const surveyId = useSelector(state => state.app.surveyId) ;
+
     const getQList = useCallback(() => {
         dispatch(getQListThunkCreator(null, surveyId));
-    });
+    }, [dispatch, surveyId]);
+
     const getSurveysList = useCallback( () => {
         dispatch (getSurveysListThunkCreator());
-    })
+    }, [dispatch])
+
     const surveyTitle = useSelector(state => state.app.surveyTitle);
     useEffect(() => { 
         getQList();
         getSurveysList();
-    }, [surveyId, surveyTitle]);
+    }, [surveyId, surveyTitle, getQList, getSurveysList]);
+    
     const qList = useSelector(state => state.app.qList);
     const surveys = useSelector(state => state.app.surveyList);
     const firstQuestion = useSelector( state => state.app.currentQuestionId);
@@ -36,6 +40,12 @@ function EditLayout() {
     const isBtnDisabled = useSelector(state => state.app.isBtnDisabled);
     let sorted = sortQList(qList, firstQuestion);
     let sortedQList = sorted.resultList;
+
+    if (!qList) {
+        return <div>Вопросы загружаются...</div>
+    }
+
+    //const firstQuestionTitle = qList.find(el => el._id === firstQuestion).title
     
     return <div>
         <div className={c.header}>
@@ -75,6 +85,7 @@ function EditLayout() {
                                                     surveyId={surveyId} 
                                                     surveyTitle={surveyTitle} 
                                                     firstQuestion={firstQuestion} 
+                                                    /* firstQuestionTitle={firstQuestionTitle} */
                                                     surveyServerMessage={surveyServerMessage}
                                                     isBtnDisabled={isBtnDisabled}
                                                     surveys={surveys} />} 
