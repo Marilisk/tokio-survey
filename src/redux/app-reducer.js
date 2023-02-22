@@ -1,4 +1,4 @@
-import surveyAPI, { createQuestionAPI, deleteQuestionAPI, editQuestionAPI, editSurveyAPI } from "../DAL/api";
+import surveyAPI, { createQuestionAPI, createSurveyAPI, deleteQuestionAPI, editQuestionAPI, editSurveyAPI } from "../DAL/api";
 const ON_ANSWER_CHANGE = 'ON_ANSWER_CHANGE';
 const ON_SUBMIT_QUESTION = 'ON_SUBMIT_QUESTION';
 const SET_QLIST = 'ON_SET_QLIST';
@@ -11,11 +11,10 @@ const UPDATE_QUESTION = 'UPDATE_QUESTION';
 const ADD_QUESTION = 'ADD_QUESTION';
 const SWITCH_BTN_DISABLED = 'SWITCH_BTN_DISABLED';
 const CHANGE_SURVEY_ID = 'CHANGE_SURVEY_ID';
+const CREATE_SURVEY = 'CREATE_SURVEY';
 
 let initialState = {
-  qList: [
-    // type - date, datetime, time, input, checkbox, select
-  ],
+  qList: [],
   answers: {},
   newAnswer: [],
 
@@ -69,9 +68,15 @@ const appReducer = (state = initialState, action) => {
       stateCopy.surveyId = action.surveyId;
       stateCopy.surveyTitle = action.title;
       stateCopy.startQuestionId = action.start;
-      stateCopy.serverResponseMessage.editSurvey = `опрос изменен. 
-      Заголовок опроса № ${action.surveyId} - ${action.title}, 
-      стартовый вопрос - ${action.start} `;
+      stateCopy.serverResponseMessage.editSurvey = `опрос изменен`;
+      return stateCopy;
+    }
+    case CREATE_SURVEY: {
+      let stateCopy = { ...state };
+      stateCopy.surveyId = action.surveyId;
+      stateCopy.surveyTitle = action.title;
+      stateCopy.startQuestionId = action.start;
+      stateCopy.serverResponseMessage.editSurvey = `опрос создан`;
       return stateCopy;
     }
     case SET_SERVER_MESSAGE: {
@@ -95,13 +100,11 @@ const appReducer = (state = initialState, action) => {
       let stateCopy = { ...state };
       let deletedId = action._id;
       stateCopy.qList = state.qList.filter(elem => elem._id !== deletedId);
-      stateCopy.serverResponseMessage.deleteQuestion = `вопрос ${deletedId} успешно удалён`;
+      stateCopy.serverResponseMessage.deleteQuestion = `вопрос удалён`;
       return stateCopy;
     }
     case ADD_STORAGE_ANSW: {
       let stateCopy = { ...state };
-      console.log('i m in ADD_STORAGE_ANSW');
-      console.log(action.obj);
       stateCopy.answers = action.obj;
       return stateCopy;
     }
@@ -118,21 +121,17 @@ const appReducer = (state = initialState, action) => {
       currentQuestion.validation = action.newQuestion.validation;
       currentQuestion.parent = action.newQuestion.parent;
       currentQuestion.parentIndex = action.newQuestion.parentIndex;
-      stateCopy.serverResponseMessage.editQuestion = `вопрос с id ${action._id} изменён на сервере`;
+      stateCopy.serverResponseMessage.editQuestion = `вопрос изменён на сервере`;
       return stateCopy;
     }
     case ADD_QUESTION: {
-      
       let stateCopy = { ...state };
       stateCopy.qList = [...state.qList];
       let newQuestion = action.question;
       newQuestion._id = action._id;
-
-      console.log(newQuestion);
       stateCopy.qList.push(newQuestion);
-      
       if (action._id) {
-        stateCopy.serverResponseMessage.editQList = `добавлен новый вопрос с id ${action._id}`;
+        stateCopy.serverResponseMessage.editQList = `добавлен новый вопрос`;
       } else {
         stateCopy.serverResponseMessage.editQList = `не получилось добавить новый вопрос :(`;
       }
@@ -158,6 +157,7 @@ export const onSubmitQuestionAC = (nextQuestionId) => ({ type: ON_SUBMIT_QUESTIO
 export const setQListAC = (qList, start, surveyId, surveyTitle) => ({ type: SET_QLIST, qList: qList, start: start, surveyId: surveyId, surveyTitle: surveyTitle });
 export const setSurveysAC = (surveyList) => ({ type: SET_SURVEYS, surveyList: surveyList, });
 export const surveyChangesAC = (surveyId, title, start) => ({ type: SET_SURVEY_CHANGES, surveyId: surveyId, title: title, start: start });
+export const surveyCreateAC = (surveyId, title, start) => ({ type: CREATE_SURVEY, surveyId: surveyId, title: title, start: start });
 export const setServerMessageAC = (text, part ) => ({ type: SET_SERVER_MESSAGE, text: text, part: part});
 export const deleteQuestionAC = (_id) => ({ type: DELETE_QUESTION, _id });
 export const addStorageAnswersAC = (obj) => ({type: ADD_STORAGE_ANSW, obj: obj});
@@ -170,11 +170,11 @@ export const changeSurveyAC = (surveyId) => ({type: CHANGE_SURVEY_ID, surveyId: 
 export const getQListThunkCreator = (lastPassedQuesNextId, surveyId) => {
   return async function getQlistThunk(dispatch) {
     dispatch(switchBtnDisabilityAC(true));
-    let response = await surveyAPI.getQList(lastPassedQuesNextId, surveyId);
+    let response = await surveyAPI.getQList(surveyId);
     let qList = response.data.questions;
     let start = lastPassedQuesNextId || response.data.start;
     let surveyTitle = response.data.title;
-    if (response.statusText === 'OK') {
+    if (response.status === 200) {
       dispatch(setQListAC(qList, start, surveyId, surveyTitle));
       dispatch(switchBtnDisabilityAC(false));
     } else {
@@ -188,7 +188,7 @@ export const getSurveysListThunkCreator = () => {
     dispatch(switchBtnDisabilityAC(true));
     let response = await surveyAPI.getSurveys();
     let surveyList = response.data;
-    if (response.statusText === 'OK') {
+    if (response.status === 200) {
       dispatch(setSurveysAC(surveyList));
       dispatch(switchBtnDisabilityAC(false));
     } else {
@@ -198,26 +198,14 @@ export const getSurveysListThunkCreator = () => {
   }
 }
 
-export const sendAnswersThunkCreator = (json) => {
-  return function sendAnswersThunk(dispatch) {
-    surveyAPI.sendAnswers(json)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
-}
 
-export const sendEditedQuestionThunkCreator = (editibleQuestionId, json) => {
+export const sendEditedQuestionThunkCreator = (editibleQuestionId, values) => {
   return async function sendEditedQuestionThunk(dispatch) {
     dispatch(switchBtnDisabilityAC(true));
     try {
-      let response =  await editQuestionAPI(editibleQuestionId, json);
-      if (response.statusText === 'OK') {
-        let newQuestion = JSON.parse(json);
-        dispatch(updateQuestionAC(editibleQuestionId, newQuestion));
+      let response =  await editQuestionAPI(editibleQuestionId, values);
+      if (response.status === 200) {
+        dispatch(updateQuestionAC(editibleQuestionId, values));
         dispatch(switchBtnDisabilityAC(false));
       }
     } catch(err) {
@@ -233,12 +221,10 @@ export const addQuestionThunkCreator = (json) => {
   return async function addQuestionThunk(dispatch) {
     dispatch(switchBtnDisabilityAC(true));
     let response = await createQuestionAPI(json);
-    if (response.statusText === 'OK') {
-      
+    if (response.status === 200) {
       let question = JSON.parse(json);
       delete question.survey_id;
       let id = response.data;
-      console.log(response);
       dispatch(addQuestionAC(id, question ));
       dispatch(switchBtnDisabilityAC(false));
     } else {
@@ -255,7 +241,7 @@ export const deleteQuestionThunkCreator = (questionId) => {
     dispatch(switchBtnDisabilityAC(true));
     try {
       let response = await deleteQuestionAPI(questionId);
-      if (response.statusText === 'OK') {
+      if (response.status === 200) {
         dispatch(deleteQuestionAC(questionId));
         dispatch(switchBtnDisabilityAC(false));
       }
@@ -271,7 +257,7 @@ export const editSurveyThunkCreator = (surveyId, json) => {
   return async function editSurveyThunk (dispatch) {
     dispatch(switchBtnDisabilityAC(true));
     let response = await editSurveyAPI(surveyId, json);
-    if (response.statusText === 'OK') {
+    if (response.status === 200) {
       let title = JSON.parse(json).title;
       let start = JSON.parse(json).start;
       dispatch(surveyChangesAC(surveyId, title, start));
@@ -279,6 +265,23 @@ export const editSurveyThunkCreator = (surveyId, json) => {
     } else {
       console.log(response);
       setServerMessageAC('ошибка запроса', 'editSurvey');
+    }
+  }
+}
+
+
+export const createSurveyThunkCreator = (title) => {
+  return async function createSurveyThunk (dispatch) {
+    dispatch(switchBtnDisabilityAC(true));
+    let response = await createSurveyAPI({title, start: ''});
+    if (response.status === 200) {
+      let surveyId = response.data._id
+      dispatch(surveyCreateAC(surveyId, title, ''));
+      dispatch(switchBtnDisabilityAC(false));
+    } else {
+      console.log(response);
+      setServerMessageAC('ошибка запроса', 'editSurvey');
+      dispatch(switchBtnDisabilityAC(false));
     }
   }
 }

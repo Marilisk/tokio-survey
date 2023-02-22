@@ -4,7 +4,7 @@ import c from './createQuestion.module.css';
 import { useDispatch } from "react-redux";
 import { addQuestionThunkCreator, changeSurveyAC, setServerMessageAC } from "../../redux/app-reducer.js";
 
-const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerMessage, surveyId}) => {
+const CreateQuestion = ({surveys, isBtnDisabled, createServerMessage, surveyId}) => {
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -21,13 +21,11 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
             ],
             validation: '',
         },
-        // validate, 
         onSubmit: (values, actions) => {
             let json = JSON.stringify(values);
-            console.log(json);
             dispatch(addQuestionThunkCreator(json));
             actions.resetForm({
-                surveyid: surveyId,
+                surveyId: surveyId,
                 nextid: '',
                 yes: '',
                 no: '',
@@ -42,7 +40,9 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
         }
     });
 
-    const surveyOptions = surveys.map( el => <option value={el._id} label={`${el.title}, id ${el._id}`} key={el._id} />);
+    const surveyOptions = surveys.map( el => <option value={el._id} 
+        label={`${el.title} - ${el.questions.length} вопросов`} 
+        key={el._id} />);
 
     return <div >
         {createServerMessage &&
@@ -57,10 +57,11 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
                 <p className={c.label}>опросник: </p>
                 <select id={'survey_id'}
                     name={'survey_id'}
-                    value={formik.values.survey_id}
+                    value={formik.values.surveyId}
                     onChange={(event) => {
-                        formik.values.survey_id = event.currentTarget.value;
-                        //console.log(event.currentTarget.value);
+                        formik.values.surveyId = event.currentTarget.value;
+                        console.log(event.currentTarget.value);
+                        console.log('huhu');
                         dispatch(changeSurveyAC(event.currentTarget.value));
                     }}
                     className={c.surveySelect}
@@ -78,39 +79,6 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
                         onChange={formik.handleChange}
                         className={c.textarea}
                     />
-                </div>
-
-                <div className={c.numbers}>
-                    <div className={c.column}>
-                        <p className={c.label}>номер следующего вопроса</p>
-                        <input id={'nextid'}
-                            name={'nextid'}
-                            value={formik.values.nextid}
-                            onChange={formik.handleChange}
-                            className={c.formInput}
-                            readOnly={formik.values.yes || formik.values.no ? true : false}
-                        />
-                    </div>
-                    <div className={c.column}>
-                        <p className={c.label}>если ответ "Да"</p>
-                        <input id={'yes'}
-                            name={'yes'}
-                            value={formik.values.yes}
-                            onChange={formik.handleChange}
-                            className={c.formInput}
-                            readOnly={formik.values.nextid ? true : false}
-                        />
-                    </div>
-                    <div className={c.column}>
-                        <p className={c.label}>если ответ "Нет"</p>
-                        <input id={'no'}
-                            name={'no'}
-                            value={formik.values.no}
-                            onChange={formik.handleChange}
-                            className={c.formInput}
-                            readOnly={formik.values.nextid ? true : false}
-                        />
-                    </div>
                 </div>
 
             </div>
@@ -218,6 +186,6 @@ const CreateQuestion = /* React.memo( */ ({surveys, isBtnDisabled, createServerM
         </form>
 
     </div>
-}/* ) */;
+};
 
 export default CreateQuestion;

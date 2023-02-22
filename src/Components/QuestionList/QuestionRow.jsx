@@ -32,8 +32,7 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
         enableReinitialize: true,
         onSubmit: (values, actions) => {
             let editibleQuestionId = qListElement._id;
-            let json = JSON.stringify(values);
-            dispatch(sendEditedQuestionThunkCreator(editibleQuestionId, json));
+            dispatch(sendEditedQuestionThunkCreator(editibleQuestionId, values));
             actions.resetForm({
                 surveyid: surveyId,
                 nextid: qListElement.nextid,
@@ -50,12 +49,16 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
         }
     });
 
+
     let options = questionsList.map((e, i) => <option className={c.option}
         value={e._id}
         label={`${e.question}`}
         key={i}>
         {e._id}
     </option>);
+    options.push(<option className={c.option} value={''} label={`нет`} key='j'>
+        нет
+    </option>)
 
     const [editMode, changeEditMode] = useState(false);
 
@@ -180,8 +183,6 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
 
                 </div>
 
-
-
                 {editMode ? <div>{formik.values.type === 'radio' ?
 
                     <div className={c.answersVarieties}>
@@ -219,7 +220,9 @@ const QuestionRow = ({ qListElement, surveyId, isBtnDisabled, questionsList }) =
                             />
                         </div>
                     </div>
+
                     :
+
                     <div className={c.validationtextArea}>
                         <p className={c.label}>валидация</p>
                         <input id={'validation'}

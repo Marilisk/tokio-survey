@@ -1,11 +1,10 @@
 import * as axios from 'axios';
 
-const API_URL = 'http://localhost:4444/'
+//const DEV_API_URL = 'http://localhost:4444/';
+const API_URL = 'https://survey-backend-marilisk.vercel.app/';
 const instance = axios.create({
-    //baseURL: 'https://survey-api.pydev.fun/v1/',
     baseURL: API_URL,
     headers: {
-        //'apitoken': 'KJ38egx3eu832*G-s8733kjcV3A',
         'accept': 'application/json',
         'Content-Type': 'application/json'
     },
@@ -15,13 +14,19 @@ export const editSurveyAPI = (surveyId, json) => {
     return instance.put(`survey/${surveyId}`, json);
 }
 
+export const createSurveyAPI = (title) => {
+    return instance.post(`createsurvey`, title);
+}
+
+
+
 export const deleteQuestionAPI = (questionId) => {
     return instance.delete(`question/${questionId}`);    
 }
 
 export const surveyAPI = {
-    getQList(lastPassedQuesNextId, surveyId) {
-        return instance.get(`surveys/questions/${surveyId}`);
+    getQList(json) {
+        return instance.get(`surveys/questions/${json}`);
     },
     sendAnswers(json) {
         return instance.post('answer', json);
@@ -34,7 +39,6 @@ export const surveyAPI = {
 const instanceEdit = axios.create({
     baseURL: API_URL,
     headers: {
-        /* 'apitoken': 'KJ38egx3eu832*G-s8733kjcV3A', */
         'Content-Type': 'application/json',
         'accept': 'application/json',
     },

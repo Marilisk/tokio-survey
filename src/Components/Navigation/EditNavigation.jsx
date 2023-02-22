@@ -43,6 +43,7 @@ export default function EditNavigation() {
                 </span>
             </NavLink>
         </div>
+
         <div className={c.wrapper}>
             <NavLink to='/edit/editsurvey' className={params['*'] === 'editsurvey'  ? c.active : c.link} >
                 <div className={c.iconWrapper}>
@@ -53,7 +54,18 @@ export default function EditNavigation() {
                 </span>
             </NavLink>
         </div>
-        
+
+        <div className={c.wrapper}>
+            <NavLink to='/edit/createsurvey' className={params['*'] === 'createsurvey'  ? c.active : c.link} >
+                <div className={c.iconWrapper}>
+                    <SurveyIcon />
+                </div>
+                <span>
+                    добавить опрос
+                </span>
+            </NavLink>
+        </div>
+
     </div>
     </div>
 };

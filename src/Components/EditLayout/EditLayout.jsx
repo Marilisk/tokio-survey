@@ -9,8 +9,8 @@ import { useCallback } from 'react';
 import EditSurvey from './../EditSurvey/EditSurvey.jsx';
 import QuestionList from '../QuestionList/QuestionList.jsx';
 import { getQListThunkCreator, getSurveysListThunkCreator } from './../../redux/app-reducer.js';
-import sortQList from '../../utilits/sortQList';
-import TESTQuestionRow from '../QuestionList/TESTQuestionRow';
+import { sortQuestions } from '../../utilits/sortQList.ts';
+import { CreateSurvey } from '../CreateSurvey/CreateSurvey';
 
 function EditLayout() {
     let dispatch = useDispatch();
@@ -38,14 +38,12 @@ function EditLayout() {
     const surveyServerMessage = useSelector(state => state.app.serverResponseMessage.editSurvey);
     const createServerMessage = useSelector(state => state.app.serverResponseMessage.editQList);
     const isBtnDisabled = useSelector(state => state.app.isBtnDisabled);
-    let sorted = sortQList(qList, firstQuestion);
-    let sortedQList = sorted.resultList;
+    let sortedQList = sortQuestions(qList, firstQuestion);
 
     if (!qList) {
         return <div>Вопросы загружаются...</div>
     }
 
-    //const firstQuestionTitle = qList.find(el => el._id === firstQuestion).title
     
     return <div>
         <div className={c.header}>
@@ -61,7 +59,7 @@ function EditLayout() {
                                             surveyId={surveyId} 
                                             surveyTitle={surveyTitle} 
                                             isBtnDisabled={isBtnDisabled}
-                                            questionsList={sorted.questionsList}
+                                            questionsList={sortedQList}
                                             surveys={surveys} />} 
                 />
                 <Route path='questionslist' element={<QuestionList 
@@ -71,7 +69,7 @@ function EditLayout() {
                                                     surveyId={surveyId} 
                                                     surveyTitle={surveyTitle} 
                                                     isBtnDisabled={isBtnDisabled}
-                                                    questionsList={sorted.questionsList}
+                                                    questionsList={sortedQList}
                                                     surveys={surveys} />} 
                 />
                 <Route path='createquestion' element={<CreateQuestion 
@@ -85,19 +83,17 @@ function EditLayout() {
                                                     surveyId={surveyId} 
                                                     surveyTitle={surveyTitle} 
                                                     firstQuestion={firstQuestion} 
-                                                    /* firstQuestionTitle={firstQuestionTitle} */
                                                     surveyServerMessage={surveyServerMessage}
                                                     isBtnDisabled={isBtnDisabled}
                                                     surveys={surveys} />} 
                 />
-                <Route path='test' element={<TESTQuestionRow sortedQList={sortedQList} 
-                                                serverMessage={serverMessage} 
-                                                deleteServerMessage={deleteServerMessage}
-                                            surveyId={surveyId} 
-                                            surveyTitle={surveyTitle} 
-                                            isBtnDisabled={isBtnDisabled}
-                                            idList={sorted.idList}
-                                            surveys={surveys} />} 
+                 <Route path='createsurvey' element={<CreateSurvey 
+                                                    /* surveyId={surveyId} 
+                                                    surveyTitle={surveyTitle} 
+                                                    firstQuestion={firstQuestion}  */
+                                                    surveyServerMessage={surveyServerMessage}
+                                                    isBtnDisabled={isBtnDisabled}
+                                                    surveys={surveys} />} 
                 />
                 
             </Routes>

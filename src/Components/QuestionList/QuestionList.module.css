@@ -71,7 +71,7 @@ body {
 }
 .surveyNumber select {
   height: 1.8em;
-  width: 480px;
+  width: 520px;
   margin-bottom: 22px;  
   border: 2px solid #E94B1E;
 }
@@ -117,9 +117,7 @@ body {
   padding: 0;
   padding-top: 8px;
   padding-right: 2px;
-  margin: 0;
-  /* border: 1px solid rebeccapurple; */
-  
+  margin: 0;  
 }
 .initialNumbers .label {
   padding: 0;
@@ -130,7 +128,6 @@ body {
   font-size: 12px;
   border: 1px solid #ececec;
   color: #808185 !important;
-  /* font-weight: 600; */
   border-radius: 3px;
   padding: .3em;
   width: 290px;
@@ -365,15 +362,13 @@ body {
 }
 
 .serverMessage {
-  z-index: 1;
+  z-index: 15;
   cursor: pointer;
-  /* max-width: 300px; */
   width: 440px;
   color: #E94B1E !important;
   color: white !important;
   font-weight: 800;
-  /* margin-top: 5px; */
-  background: rgba(67, 86, 104, .85);
+  background: rgba(67, 86, 104, 1);
   border-radius: 5px;
   padding: 40px;
   font-size: 20px;
@@ -384,7 +379,7 @@ body {
 }
 .serverMessage:hover {
   background: rgba(67, 86, 104, .7);
-  transition: 1s;
+  transition: 300ms;
 }
 .serverMsgNote {
   font-size: 10px;

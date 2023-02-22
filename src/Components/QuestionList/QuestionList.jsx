@@ -17,7 +17,8 @@ const QuestionList = ({ sortedQList, serverMessage, deleteServerMessage, surveyI
         questionsList={questionsList}
     />)
 
-    const surveyOptions = surveys.map(el => <option value={el._id} label={`${el.title}, id ${el._id}`} key={el._id} />);
+    const surveyOptions = surveys.map(el => <option value={el._id} 
+            label={`${el.title}, ${el.questions.length} вопросов`} key={el._id} />);
 
     return <>
         <div className={c.shortForm}>
@@ -37,13 +38,13 @@ const QuestionList = ({ sortedQList, serverMessage, deleteServerMessage, surveyI
 
                 {serverMessage && <div className={c.serverMessage} onClick={() => dispatch(setServerMessageAC(null))} >
                     {serverMessage}
-                    <span className={c.serverMsgNote}>кликните для закрытия</span>
+                    <span className={c.serverMsgNote}>нажмите для закрытия</span>
                 </div>
                 }
 
                 {deleteServerMessage && <div className={c.serverMessage} onClick={() => dispatch(setServerMessageAC(null, 'deleteQuestion'))} >
                     {deleteServerMessage}
-                    <span className={c.serverMsgNote}>кликните окно для закрытия</span>
+                    <span className={c.serverMsgNote}>нажмите окно для закрытия</span>
                 </div>
                 }
 

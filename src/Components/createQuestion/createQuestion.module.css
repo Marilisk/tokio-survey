@@ -3,7 +3,6 @@
   vertical-align: baseline;
   overflow-x: hidden;
   overflow-y: visible;  
-  /* position: static; */
 }
 
 .answers {
@@ -16,14 +15,13 @@
   margin: 0 auto;
   flex-wrap: nowrap;
   justify-content: space-evenly;
-  /* border: 2px solid pink; */
 }
 
 .radioWrapper div {
   margin: 0;
 }
 
-/* === ФОРМА ВНУТРЕННЕГО ПОЛЬЗОВАНИЯ === */
+
 .form {
   width: 1080px;
   margin: 0 auto;  
@@ -34,19 +32,21 @@
 }
 
 .text {
-  width: 30%;
+  width: 100%;
 }
 .textarea {
   background: #ececec;
   border: 1px solid #D5D5D6; 
   color: #808185 !important;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 16px;
   border-radius: 3px;
   padding: .3em;
   height: 80px;
   width: 98%; 
   text-align: justify;
-  margin: 5px auto 0 0;
+  margin: 5px auto;
+  resize: none;
 }
 .textarea:focus, .formInput:focus {
   outline: none;
@@ -107,7 +107,7 @@
   margin: 15px 10px auto auto;
 }
 .surveySelect {
-  width: 340px;
+  width: 400px;
 }
 .numbers {
   display: flex;
@@ -134,7 +134,6 @@
 }
 
 
-
 .radioGroup {
   width: 30%;  
 }
@@ -144,7 +143,6 @@
 label {
   display: flex;
 }
-
 
 .customRadioBtn {
   cursor: pointer;
@@ -160,19 +158,18 @@ label {
   display: none;
 }
 
-
 .nonClickable {
   pointer-events: none;
   
 }
 
 .serverMessage {
-  max-width: 200px;
+  max-width: 220px;
   color: #E94B1E !important;
   color: white !important;
   font-weight: 800;
   margin-top: 5px;
-  background: rgba(67, 86, 104, .85);
+  background: rgba(67, 86, 104, 1);
   border-radius: 5px;
   padding: 20px;
   font-size: 20px;
@@ -182,7 +179,6 @@ label {
   transition: 2s;
 }
 .serverMessage:hover {
-  background: rgba(67, 86, 104, .7);
   transition: 300ms;
 }
 .serverMsgNote {

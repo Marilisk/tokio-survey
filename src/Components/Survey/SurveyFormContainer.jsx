@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQListThunkCreator, sendAnswersThunkCreator } from '../../redux/app-reducer.js';
+import { getQListThunkCreator } from '../../redux/app-reducer.js';
 import c from './../../App.module.css';
 import Question from "./Question.jsx";
 import { manageStorageonFinishSurvey } from "./manageStorage.js";
@@ -13,30 +13,29 @@ import surveyAPI from "../../DAL/api.js";
 const SurveyFormContainer = () => {
   let surveyId = useSelector(state => state.app.surveyId);
   let dispatch = useDispatch();
-  const getQList = useCallback(() => {
+
+  const getQList = useCallback((surveyId) => {
     let lastPassedQuesNextId = null;
     if (localStorage.getItem('lastPassedQuestionNextId')) {
       lastPassedQuesNextId = localStorage.getItem('lastPassedQuestionNextId');
     }
     dispatch(getQListThunkCreator(lastPassedQuesNextId, surveyId));
-  }, [dispatch, surveyId]);
+  }, [dispatch]);
 
   const collectedAnswers = (useSelector(state => state.app.answers));
 
-  const sendAnswers = useCallback((answers) => {
+  const sendAnswers = (answers) => {
     manageStorageonFinishSurvey();
     let request = {
       answers,
       survey_id: 1
     };
-    console.log(request)
     surveyAPI.sendAnswers(request)
-    //dispatch(sendAnswersThunkCreator(request));
-  }, [dispatch])
+  }
 
   let inputValue = useSelector(state => state.app.newAnswer[1]);
 
-  useEffect((surveyId) => {
+  useEffect(() => {
     getQList(surveyId);
   }, [surveyId, getQList]);
 
@@ -61,7 +60,6 @@ const SurveyFormContainer = () => {
 
   if (!question || (qList.length === Object.keys(collectedAnswers).length)) {
     if (Object.keys(collectedAnswers).length < qList.length) {
-      //console.log('вопросов больше чем ответов, берем из storage');
       let answersFromStorage = {};
       for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);
