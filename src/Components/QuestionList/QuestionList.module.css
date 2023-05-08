@@ -46,7 +46,6 @@ body {
   margin: 5px;
 }
 .shortQuestionRow {
-  /* height: 154px; */
   justify-content: space-evenly; 
 }
 
@@ -73,7 +72,7 @@ body {
   height: 1.8em;
   width: 520px;
   margin-bottom: 22px;  
-  border: 2px solid #E94B1E;
+  border-radius: 4px;
 }
 .surveyNumber select:focus {
   outline: none;

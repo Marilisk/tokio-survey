@@ -14,25 +14,25 @@ import { CreateSurvey } from '../CreateSurvey/CreateSurvey';
 
 function EditLayout() {
     let dispatch = useDispatch();
-    const surveyId = useSelector(state => state.app.surveyId) ;
+    const surveyId = useSelector(state => state.app.surveyId);
 
     const getQList = useCallback(() => {
         dispatch(getQListThunkCreator(null, surveyId));
     }, [dispatch, surveyId]);
 
-    const getSurveysList = useCallback( () => {
-        dispatch (getSurveysListThunkCreator());
+    const getSurveysList = useCallback(() => {
+        dispatch(getSurveysListThunkCreator());
     }, [dispatch])
 
     const surveyTitle = useSelector(state => state.app.surveyTitle);
-    useEffect(() => { 
+    useEffect(() => {
         getQList();
         getSurveysList();
     }, [surveyId, surveyTitle, getQList, getSurveysList]);
-    
+
     const qList = useSelector(state => state.app.qList);
     const surveys = useSelector(state => state.app.surveyList);
-    const firstQuestion = useSelector( state => state.app.currentQuestionId);
+    const firstQuestion = useSelector(state => state.app.currentQuestionId);
     const serverMessage = useSelector(state => state.app.serverResponseMessage.editQuestion);
     const deleteServerMessage = useSelector(state => state.app.serverResponseMessage.deleteQuestion);
     const surveyServerMessage = useSelector(state => state.app.serverResponseMessage.editSurvey);
@@ -44,59 +44,58 @@ function EditLayout() {
         return <div>Вопросы загружаются...</div>
     }
 
-    
     return <div>
         <div className={c.header}>
             <img src={logo} alt='' />
         </div>
         <EditNavigation />
         <div className={c.surveyWrapper}>
+
             <Routes>
-                <Route path='' element={<QuestionList 
-                                            sortedQList={sortedQList} 
-                                            serverMessage={serverMessage} 
-                                            deleteServerMessage={deleteServerMessage}
-                                            surveyId={surveyId} 
-                                            surveyTitle={surveyTitle} 
-                                            isBtnDisabled={isBtnDisabled}
-                                            questionsList={sortedQList}
-                                            surveys={surveys} />} 
+
+                <Route path='' element={<QuestionList
+                    sortedQList={sortedQList}
+                    serverMessage={serverMessage}
+                    deleteServerMessage={deleteServerMessage}
+                    surveyId={surveyId}
+                    surveyTitle={surveyTitle}
+                    isBtnDisabled={isBtnDisabled}
+                    questionsList={sortedQList}
+                    surveys={surveys} />}
                 />
-                <Route path='questionslist' element={<QuestionList 
-                                                    sortedQList={sortedQList} 
-                                                    serverMessage={serverMessage} 
-                                                    deleteServerMessage={deleteServerMessage}
-                                                    surveyId={surveyId} 
-                                                    surveyTitle={surveyTitle} 
-                                                    isBtnDisabled={isBtnDisabled}
-                                                    questionsList={sortedQList}
-                                                    surveys={surveys} />} 
+                <Route path='questionslist' element={<QuestionList
+                    sortedQList={sortedQList}
+                    serverMessage={serverMessage}
+                    deleteServerMessage={deleteServerMessage}
+                    surveyId={surveyId}
+                    surveyTitle={surveyTitle}
+                    isBtnDisabled={isBtnDisabled}
+                    questionsList={sortedQList}
+                    surveys={surveys} />}
                 />
-                <Route path='createquestion' element={<CreateQuestion 
-                                                        surveys={surveys}
-                                                        isBtnDisabled={isBtnDisabled}
-                                                        createServerMessage={createServerMessage}
-                                                        surveyId= {surveyId}
-                                                        />}
+                <Route path='createquestion' element={<CreateQuestion
+                    surveys={surveys}
+                    isBtnDisabled={isBtnDisabled}
+                    createServerMessage={createServerMessage}
+                    surveyId={surveyId}
+                />}
                 />
-                <Route path='editsurvey' element={<EditSurvey 
-                                                    surveyId={surveyId} 
-                                                    surveyTitle={surveyTitle} 
-                                                    firstQuestion={firstQuestion} 
-                                                    surveyServerMessage={surveyServerMessage}
-                                                    isBtnDisabled={isBtnDisabled}
-                                                    surveys={surveys} />} 
+                <Route path='editsurvey' element={<EditSurvey
+                    surveyId={surveyId}
+                    surveyTitle={surveyTitle}
+                    firstQuestion={firstQuestion}
+                    surveyServerMessage={surveyServerMessage}
+                    isBtnDisabled={isBtnDisabled}
+                    surveys={surveys} />}
                 />
-                 <Route path='createsurvey' element={<CreateSurvey 
-                                                    /* surveyId={surveyId} 
-                                                    surveyTitle={surveyTitle} 
-                                                    firstQuestion={firstQuestion}  */
-                                                    surveyServerMessage={surveyServerMessage}
-                                                    isBtnDisabled={isBtnDisabled}
-                                                    surveys={surveys} />} 
+                <Route path='createsurvey' element={<CreateSurvey
+                    surveyServerMessage={surveyServerMessage}
+                    isBtnDisabled={isBtnDisabled}
+                    surveys={surveys} />}
                 />
-                
+
             </Routes>
+            
         </div>
     </div>
 }
